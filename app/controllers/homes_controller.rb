@@ -1,21 +1,24 @@
 class HomesController < ApplicationController
-
+  require 'geocoder'
   def index
     @homes = Home.all
     render :index
   end
 
   def create
+    address = params[:address]
+    coordinates = Geocoder.coordinates(address)
     @home = Home.create(
       description: params[:description],
       year_built: params[:year_built],
       square_feet: params[:square_feet],
       bedrooms: params[:bedrooms],
       bathrooms: params[:bathrooms],
-      floors: params[:floors],
       availability: params[:availability],
       address: params[:address],
-      price: params[:price]
+      price: params[:price],
+      latitude: coordinates[0],
+      longitude: coordinates[1]
     )
     render :show
   end
@@ -27,16 +30,19 @@ class HomesController < ApplicationController
 
   def update
     @home = Home.find_by(id: params[:id])
+    address = params[:address] || @home.address
+    coordinates = Geocoder.coordinates(address)
     @home.update(
       description: params[:description] || @home.description,
       year_built: params[:year_built] || @home.year_built,
       square_feet: params[:square_feet] || @home.square_feet,
       bedrooms: params[:bedrooms] || @home.bedrooms,
       bathrooms: params[:bathrooms] || @home.bathrooms,
-      floors: params[:floors] || @home.floors,
       availability: params[:availability] || @home.availability,
       address: params[:address] || @home.address,
-      price: params[:price] || @home.price
+      price: params[:price] || @home.price,
+      latitude: coordinates[0],
+      longitude: coordinates[1]
     )
     render :show
   end
