@@ -1,3 +1,4 @@
+json.id home.id
 json.description home.description
 json.year_built home.year_built
 json.square_feet home.square_feet

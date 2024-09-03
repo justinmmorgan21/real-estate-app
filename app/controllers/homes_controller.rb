@@ -1,5 +1,4 @@
 class HomesController < ApplicationController
-  require 'geocoder'
   def index
     @homes = Home.all
     render :index
@@ -29,22 +28,25 @@ class HomesController < ApplicationController
   end
 
   def update
-    @home = Home.find_by(id: params[:id])
-    address = params[:address] || @home.address
-    coordinates = Geocoder.coordinates(address)
-    @home.update(
-      description: params[:description] || @home.description,
-      year_built: params[:year_built] || @home.year_built,
-      square_feet: params[:square_feet] || @home.square_feet,
-      bedrooms: params[:bedrooms] || @home.bedrooms,
-      bathrooms: params[:bathrooms] || @home.bathrooms,
-      availability: params[:availability] || @home.availability,
-      address: params[:address] || @home.address,
-      price: params[:price] || @home.price,
-      latitude: coordinates[0],
-      longitude: coordinates[1]
-    )
-    render :show
+    # @home = Home.find_by(id: params[:id])
+    # address = params[:address] || @home.address
+
+    result = Geocoder.search("Frisco, TX")
+    puts result
+    render json: {result: result}
+    # @home.update(
+    #   description: params[:description] || @home.description,
+    #   year_built: params[:year_built] || @home.year_built,
+    #   square_feet: params[:square_feet] || @home.square_feet,
+    #   bedrooms: params[:bedrooms] || @home.bedrooms,
+    #   bathrooms: params[:bathrooms] || @home.bathrooms,
+    #   availability: params[:availability] || @home.availability,
+    #   address: params[:address] || @home.address,
+    #   price: params[:price] || @home.price,
+    #   latitude: coordinates[0],
+    #   longitude: coordinates[1]
+    # )
+    # render :show
   end
 
   def delete
