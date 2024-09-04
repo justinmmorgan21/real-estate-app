@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get "/homes/:id" => "homes#show"
   patch "/homes/:id" => "homes#update"
   delete "/homes/:id" => "homes#delete"
+  get "/homes/weather" => "homes#weather"
   # Defines the root path route ("/")
   # root "posts#index"
 end
